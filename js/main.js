@@ -1,29 +1,3 @@
-//把字符串code写入页面中
-function writeCode(prefix, code, fn) {
-    var n = 0
-    var id = setInterval(() => {
-        preTag.scrollTop = preTag.scrollHeight
-        preTag.innerHTML = Prism.highlight(prefix + code.substring(0, n), Prism.languages.css, 'css')
-        styleTag.insertAdjacentHTML('beforeend', code[n])
-        n++
-        if (n >= code.length) {
-            window.clearInterval(id)
-            fn()
-        }
-    }, 0)
-}
-function createPaper(fn) {
-    var paperWrapper = document.createElement('div')
-    paperWrapper.id = 'paperWrapper'
-    document.body.append(paperWrapper)
-    var paper = document.createElement('div')
-    paper.id = 'paper'
-    paperWrapper.append(paper)
-    fn()
-}
-function rotate() {
-    preTag.classList.add('rotate')
-}
 var code = `/*
   我是yyh
     我将通过这个页面的动画来介绍我自己
@@ -38,11 +12,14 @@ var code = `/*
     font-family:Kozuka Gothic Pro L;     
 }
 html{
-    background:rgb(222,222,222);
+    background:#ddd;
 }
 #preTag{
     padding:20px;
     border:1px solid black;
+    width:600px;   
+    background:rgb(206, 192, 192);
+    box-shadow:-3px 3px 3px 3px rgba(0, 0, 0, 0.2);
 }
 /* 需要高亮一下代码 */
 .token.selector{
@@ -57,20 +34,15 @@ html{
 .token.function{
     color:#DD4A68;
 }
-/*我需要一张白纸*/
+/*我需要一张白纸来进行自我介绍*/
 `
-writeCode('', code, () => {
-    rotate()
-    createPaper(() => {
-        writeCode(code, code2, () => { console.log(1) })
-    })
-})
 
 var code2 = `
 #paperWrapper{
     position:fixed;
-    top:0;right:0;
-    width:50%;height:100vh;
+    top:18px;right:0;
+    border:2px solid rgb(182, 144, 243);
+    width:50%;height:88vh;
     background: rgb(206, 192, 192);
 }
 #paper{
@@ -78,3 +50,81 @@ var code2 = `
     width:100%;height:100%;
 }
 `
+var md = `
+# 自我介绍
+我叫 XXX
+1990 年 1 月出生
+XXX 学校毕业
+自学前端半年
+希望应聘前端开发岗位
+# 技能介绍
+熟悉 JavaScript CSS
+# 项目介绍
+1. XXX 轮播
+2. XXX 简历
+3. XXX 画板
+# 联系方式
+- QQ xxxxxxxx
+- Email xxxxxxxx
+- 手机 xxxxxxx
+# 联系方式
+- QQ xxxxxxxx
+- Email xxxxxxxx
+- 手机 xxxxxxx
+`
+writeCode(code,() => {
+    createPaper(() => {
+        writeCode(code, code2, () =>{writeMakeDown(md,()=>{
+            convertMarkdownToHtml(()=>{})
+        })})
+    })
+})
+
+function convertMarkdownToHtml(fn){
+    paper.innerHTML = marked(md)
+    fn && fn.call()
+  }
+  
+
+function writeCode(/*传入要在页面显示的多个字符串和一个函数*/) {
+    var n = 0
+    var string = ''
+    for(let key in arguments){
+        if(key>arguments.length -3){
+            break;
+        }else string += arguments[key]
+    }
+    
+    var id = setInterval(() => {
+        preTag.innerHTML = Prism.highlight(string + arguments[arguments.length-2].substring(0, n), Prism.languages.css, 'css')
+        styleTag.insertAdjacentHTML('beforeend',arguments[arguments.length-2][n])
+        n++
+        document.querySelector('pre').scrollTop = 10000
+        if (n >= arguments[arguments.length-2].length) {
+            arguments[arguments.length-1]()
+            window.clearInterval(id)
+        }
+    }, 10)
+    
+}
+function createPaper(fn) {
+    var paperWrapper = document.createElement('div')
+    paperWrapper.id = 'paperWrapper'
+    body = document.querySelector('body')
+    body.append(paperWrapper)
+    var paper = document.createElement('pre')
+    paper.id = 'paper'
+    paperWrapper.append(paper)
+    fn()
+}
+function writeMakeDown(md,fn){
+    let n = 0
+    let id = setInterval(()=>{
+        document.querySelector('#paper').insertAdjacentHTML('beforeend',md[n])
+        n++
+        if(n>=md.length){
+            window.clearInterval(id)
+            fn()
+        }
+    },10)
+}

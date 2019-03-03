@@ -12,19 +12,20 @@
     color: black;
 }
 #preTag{
-    height: 100vh;
+    margin-left: 35px;
+    margin-top: 20px;
     overflow: hidden;
+    height:88vh;
 }
-#preTag.rotate{
-    width:700px;
-    position: fixed; left: 0; top: 0;
-    -webkit-transform: rotateY(10deg) translateZ(-100px) ;
-    transform: rotateY(10deg) translateZ(-100px); 
-}
+
 #paperWrapper{
     display: flex;
     justify-content: center;
     text-align: center;
     padding:19px;
     overflow: auto;
+}
+#paper{
+    display: flex;
+    justify-content: flex-start;
 }
