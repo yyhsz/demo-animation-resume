@@ -79,7 +79,7 @@ writeCode(code,() => {
         })})
     })
 })
-
+//存在一些bug
 function convertMarkdownToHtml(fn){
     paper.innerHTML = marked(md)
     fn && fn.call()
