@@ -1,0 +1,30 @@
+*{margin: 0;padding: 0;}
+.token.selector{
+    color: black;
+}
+.token.punctuation{
+    color: black;    
+}
+.token.property{
+    color: black;
+}
+.token.function{
+    color: black;
+}
+#preTag{
+    height: 100vh;
+    overflow: hidden;
+}
+#preTag.rotate{
+    width:700px;
+    position: fixed; left: 0; top: 0;
+    -webkit-transform: rotateY(10deg) translateZ(-100px) ;
+    transform: rotateY(10deg) translateZ(-100px); 
+}
+#paperWrapper{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding:19px;
+    overflow: auto;
+}
